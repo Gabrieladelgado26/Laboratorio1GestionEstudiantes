@@ -22,7 +22,7 @@ public class Proyecto {
         boolean activo = true;
         
         // ArrayList que almacena los alumnos
-        ArrayList<Alumno> misAlumnos = new ArrayList<Alumno>();
+        ArrayList <Alumno> misAlumnos = new ArrayList <Alumno>();
         
         do{
             
@@ -68,8 +68,10 @@ public class Proyecto {
                 a.setCorreo(correo);
                 a.setCelular(celular);
             
-                // Se agrega el valos del objeto al ArrayList
+                // Se agrega el valor del objeto al ArrayList
                 misAlumnos.add(a);
+                
+                System.out.println("\n" + "Alumno registrado" + "\n");
                 
                 break;
                 
@@ -82,11 +84,30 @@ public class Proyecto {
                 break;
                 
             case 4:
-                System.out.println("Opción 4");
+                
+                if (misAlumnos.size() > 0){
+                // Mensaje inicial de la opción consultar alumnos
+                System.out.println("\n" + "LOS ALUMNOS REGISTRADOS SON:" + "\n");
+                
+                // Ciclo for que recorre que es menor al tamaño del arrayList misAlumnos
+                    for (int i = 0; i < misAlumnos.size(); i ++)
+                    {
+                        Alumno alumno = misAlumnos.get(i);
+                        System.out.println("Cédula: " + alumno.getCedula() + "\n" +
+                                           "Nombre: " + alumno.getNombre() + "\n" +
+                                           "Apellido: " + alumno.getApellido() + "\n" +
+                                           "Semestre: " + alumno.getSemestre() + "\n" +
+                                           "Correo: " + alumno.getCorreo() + "\n" +
+                                           "Celular: " + alumno.getCelular() + "\n" +
+                                           "\n" + "======================================" + "\n");
+                    }
+                } else {
+                    System.out.println("\n" + "En el momento no hay alumnos registrados" + "\n");
+                }
                 break;
                 
             case 5:
-                System.out.println("Gracias por ingresas, nos vemos pronto!");
+                System.out.println("Gracias por ingresar, vuelvw pronto!");
                 activo = false;
                 break;
                 
