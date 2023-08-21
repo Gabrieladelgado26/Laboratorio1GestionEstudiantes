@@ -27,8 +27,7 @@ public class Proyecto {
         do{
             
         // Muestra un menú al usuario
-        System.out.println("\n" + "------------BIENVENID@------------" + "\n" +
-                           "---------MENÚ DE OPCIONES---------" + "\n" +
+        System.out.println("\n" + "---------MENÚ DE OPCIONES---------" + "\n" +
                            "¿Qué operación quieres hacer?" + "\n" +
                            "1.- Ingresar alumno" + "\n" +
                            "2.- Eliminar alumno" + "\n" +
@@ -48,22 +47,22 @@ public class Proyecto {
                 System.out.println("\n" + "-----------------INGRESAR ALUMNO-----------------" + "\n" +
                                           "-------------------------------------------------" + "\n");
                 
-                System.out.println("\n" + "Introduce la cédula del alumno");
+                System.out.println("Introduce la cédula del alumno");
                 String cedula = lector.next();
                 
-                System.out.println("Introduce el nombre del alumno");
+                System.out.println("\n" +"Introduce el nombre del alumno");
                 String nombre = lector.next();
                 
-                System.out.println("Introduce el apellido del alumno");
+                System.out.println("\n" + "Introduce el apellido del alumno");
                 String apellido = lector.next();
                
-                System.out.println("Introduce el semestre del alumno");
+                System.out.println("\n" +"Introduce el semestre del alumno");
                 int semestre = lector.nextInt();
                 
-                System.out.println("Introduce el correo del alumno");
+                System.out.println("\n" +"Introduce el correo del alumno");
                 String correo = lector.next();
                 
-                System.out.println("Introduce el celular del alumno");
+                System.out.println("\n" +"Introduce el celular del alumno");
                 String celular = lector.next();
                 
                 // Se crea un objeto para guardar la información de cada alumno
@@ -78,7 +77,7 @@ public class Proyecto {
                 // Se agrega el valor del objeto al ArrayList
                 misAlumnos.add(a);
                 
-                System.out.println("\n" + "---ALUMNO REGISTRADO CORRECTAMENTE---" + "\n");
+                System.out.println("\n" + "---ALUMNO REGISTRADO CORRECTAMENTE---");
                 
                 break;
                 
@@ -94,7 +93,7 @@ public class Proyecto {
                 // Condicional if que evalua si hay algun alumno para eliminar, en el caso contrario envia un mensaje informando la situación
                 if (misAlumnos.size() > 0)
                 {
-                System.out.println("\n" + "Introduce la cédula del alumno que desea eliminar");
+                System.out.println("Introduce la cédula del alumno que desea eliminar");
                 String alumnoEliminar = lector.next();
 
                     // Ciclo for que recorre los datos del arrayList llamado misAlumnos
@@ -102,8 +101,20 @@ public class Proyecto {
                     {
                         if (misAlumnos.get(i).getCedula().equals(alumnoEliminar))
                         {
-                            misAlumnos.remove(i);
-                            System.out.println("\n" + "El alumno de cédula: " + alumnoEliminar + "ha sido eliminado" + "\n");
+                            encontrarAlumnoEliminar = true;
+                            System.out.println("Esta seguro que desea eliminar el alumno de cédula: " + alumnoEliminar + "\n" +
+                                               "Digite (s) para eliminar el alumno o digite (n) si desea salir de esta opción");
+                            String eliminar = lector.next();
+                            switch (eliminar){
+                                case "s":
+                                    misAlumnos.remove(i);
+                                    System.out.println("\n" + "EL ALUMNO DE CÉDULA " + alumnoEliminar + " HA SIDO ELIMINADO");
+                                    break;
+                                
+                                case "n":
+                                    System.out.println("Has elegido la opción de salir");
+                            }
+                            break;
                         }
                     }
                 } else {
@@ -128,7 +139,7 @@ public class Proyecto {
                 // Condicional if que evalua si hay algun alumno para modificar, en el caso contrario envia un mensaje informando la situación
                 if (misAlumnos.size() > 0)
                 {
-                    System.out.println("\n" + "Introduce la cédula del alumno que desea modificar");
+                    System.out.println("Ingrese la cédula del alumno que desea modificar");
                     String cedulaModificar = lector.next();
 
                     // Variable de tipo boolean que en caso de ser true seguira mostrando el menú para modificar, si es false sale de la opción 3
@@ -146,60 +157,60 @@ public class Proyecto {
                                                "Semestre: " + alumno.getSemestre() + "\n" +
                                                "Correo: " + alumno.getCorreo() + "\n" +
                                                "Celular: " + alumno.getCelular() + "\n" +
-                                               "======================================");
+                                               "================================");
 
                             do {
 
                             System.out.println("\n" + "Ingrese el dato que desea modificar" + "\n" +
-                                               "Si desea salir de esta opción digite s");
-//                                               "Opción 1: Modificar cédula" + "\n" +
-//                                               "Opción 2: Modificar nombre" + "\n" +
-//                                               "Opción 3: Modificar apellido" + "\n" +
-//                                               "Opción 4: Modificar semestre" + "\n" +
-//                                               "Opción 5: Modificar correo" + "\n" +
-//                                               "Opción 6: Modificar celular" + "\n" +
-//                                               "Para salir de esta opción digite 0" + "\n");
+                                               "Opción 1: Modificar cédula" + "\n" +
+                                               "Opción 2: Modificar nombre" + "\n" +
+                                               "Opción 3: Modificar apellido" + "\n" +
+                                               "Opción 4: Modificar semestre" + "\n" +
+                                               "Opción 5: Modificar correo" + "\n" +
+                                               "Opción 6: Modificar celular" + "\n" +
+                                               "Para salir de esta opción digite 0" + "\n");
 
-                            String datoModificar = lector.next();
+                            int datoModificar = lector.nextInt();
 
                                 switch (datoModificar){
-                                    case "cedula":
+                                    
+                                    case 1:
                                         System.out.println("\n" + "Digite la cédula nueva");
                                         String cedulaModificada = lector.next();
                                         alumno.setCedula(cedulaModificada);
                                         break;
 
-                                    case "nombre":
+                                    case 2:
                                         System.out.println("\n" + "Digite el nuevo nombre del alumno");
                                         String nombreModificado = lector.next();
                                         alumno.setNombre(nombreModificado);
                                         break;
 
-                                    case "apellido":
+                                    case 3:
                                         System.out.println("\n" + "Digite el nuevo apellido del alumno");
                                         String apellidoModificado = lector.next();
                                         alumno.setApellido(apellidoModificado);
                                         break;
 
-                                    case "semestre":
+                                    case 4:
                                         System.out.println("\n" + "Digite el nuevo semestre del alumno");
                                         int semestreModificado = lector.nextInt();
                                         alumno.setSemestre(semestreModificado);
                                         break;
 
-                                    case "correo":
+                                    case 5:
                                         System.out.println("\n" + "Digite el nuevo correo del alumno");
                                         String correoModificado = lector.next();
                                         alumno.setCorreo(correoModificado);
                                         break;
 
-                                    case "celular":
+                                    case 6:
                                         System.out.println("\n" + "Digite el nuevo celular del alumno");
                                         String celularModificado = lector.next();
                                         alumno.setCelular(celularModificado);
                                         break;
                                         
-                                    case "s":
+                                    case 0:
                                         System.out.println("LOS DATOS NUEVOS FUERON MODIFICADOS CORRECTAMENTE" + "\n");
                                         opcionSalir = false;
                                         break;
