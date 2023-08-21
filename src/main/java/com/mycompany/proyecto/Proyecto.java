@@ -6,6 +6,7 @@ package com.mycompany.proyecto;
 
 import Mundo.Alumno;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -43,18 +44,43 @@ public class Proyecto {
             
             case 1:
                 
+                // Variable de tipo boolean que verifica si la cédula a ingresar ya esta registrada en el sistema
+                boolean registrada = false;
+
                 // Mensaje inicial opción 1
                 System.out.println("\n" + "-----------------INGRESAR ALUMNO-----------------" + "\n" +
                                           "-------------------------------------------------" + "\n");
                 
+                try {
                 System.out.println("Introduce la cédula del alumno");
                 String cedula = lector.next();
                 
+                // Condicional if que verifica que la cédula solo contenga números, de lo contrario se envia mensaje de error
+                if (!cedula.matches("\\d+")){
+                    throw new InputMismatchException();
+                }
+                
+                // Recorre el arrayList para verificar que la cédula a ingresar no este registrada en el sistema
+                for (int i = 0; i < misAlumnos.size(); i++){
+                    Alumno alumno = misAlumnos.get(i);
+                    if (alumno.getCedula().equals(cedula))
+                    {
+                        registrada = true;
+                    }
+                }
+                
+                if (registrada != true){
                 System.out.println("\n" +"Introduce el nombre del alumno");
                 String nombre = lector.next();
+                if (nombre.matches(".*[0-9].*")){
+                    throw new InputMismatchException();
+                }
                 
                 System.out.println("\n" + "Introduce el apellido del alumno");
                 String apellido = lector.next();
+                if (apellido.matches(".*[0-9].*")){
+                    throw new InputMismatchException();
+                }
                
                 System.out.println("\n" +"Introduce el semestre del alumno");
                 int semestre = lector.nextInt();
@@ -64,6 +90,9 @@ public class Proyecto {
                 
                 System.out.println("\n" +"Introduce el celular del alumno");
                 String celular = lector.next();
+                if (!celular.matches("\\d+")){
+                    throw new InputMismatchException();
+                }
                 
                 // Se crea un objeto para guardar la información de cada alumno
                 Alumno a = new Alumno();
@@ -77,8 +106,15 @@ public class Proyecto {
                 // Se agrega el valor del objeto al ArrayList
                 misAlumnos.add(a);
                 
-                System.out.println("\n" + "---ALUMNO REGISTRADO CORRECTAMENTE---");
-                
+                System.out.println("\n" + "ALUMNO REGISTRADO CORRECTAMENTE" + "\n" +
+                                   "-------------------------------");
+                } else {
+                    System.out.println("La cédula del alumno que intenta ingresar ya se encuentra registrada");
+                }
+                } catch (InputMismatchException e){
+                    System.out.println("Los datos ingresados no son validos, porfavor verifique la información");
+                    lector.nextLine();
+                }
                 break;
                 
             case 2:
@@ -90,11 +126,15 @@ public class Proyecto {
                 // Variable de tipo boolean que sera true si existe el número de cédula del alumno que se desea eliminar, si es falso envia un mensaje informando la situación
                 boolean encontrarAlumnoEliminar = false;
                 
+                try{
                 // Condicional if que evalua si hay algun alumno para eliminar, en el caso contrario envia un mensaje informando la situación
                 if (misAlumnos.size() > 0)
                 {
                 System.out.println("Introduce la cédula del alumno que desea eliminar");
                 String alumnoEliminar = lector.next();
+                if (!alumnoEliminar.matches("\\d+")){
+                    throw new InputMismatchException();
+                }
 
                     // Ciclo for que recorre los datos del arrayList llamado misAlumnos
                     for (int i = 0; i < misAlumnos.size(); i ++)
@@ -102,13 +142,15 @@ public class Proyecto {
                         if (misAlumnos.get(i).getCedula().equals(alumnoEliminar))
                         {
                             encontrarAlumnoEliminar = true;
-                            System.out.println("Esta seguro que desea eliminar el alumno de cédula: " + alumnoEliminar + "\n" +
+                            Alumno alumno = misAlumnos.get(i);
+                            System.out.println("Esta seguro que desea eliminar a el alumno " + alumno.getNombre() + " de cédula: " + alumnoEliminar + "\n" +
                                                "Digite (s) para eliminar el alumno o digite (n) si desea salir de esta opción");
                             String eliminar = lector.next();
                             switch (eliminar){
                                 case "s":
                                     misAlumnos.remove(i);
-                                    System.out.println("\n" + "EL ALUMNO DE CÉDULA " + alumnoEliminar + " HA SIDO ELIMINADO");
+                                    System.out.println("\n" + "EL ALUMNO DE CÉDULA " + alumnoEliminar + " HA SIDO ELIMINADO" + "\n" +
+                                                       "------------------------------------------------------------");
                                     break;
                                 
                                 case "n":
@@ -117,13 +159,17 @@ public class Proyecto {
                             break;
                         }
                     }
+                    if (!encontrarAlumnoEliminar)
+                    {
+                        System.out.println("No se encontro alumnos con el número de cédula ingresado");
+                    }
                 } else {
                     System.out.println("EL REGISTRO DE ALUMNOS ESTA VACIO" + "\n" +
                                        "=================================");
                 }
-                if (!encontrarAlumnoEliminar)
-                {
-                    System.out.println("No se encontro alumnos con ese número de cédula" + "\n");
+                } catch (InputMismatchException | NumberFormatException e){
+                    System.out.println("Los datos ingresados no son validos, porfavor verifique la información");
+                    break;
                 }
                 break;
                 
@@ -134,22 +180,30 @@ public class Proyecto {
                                           "-------------------------------------------------" + "\n");
                 
                 // Variable de tipo boolean que sera true si existe el número de cédula del alumno que se desea eliminar, si es falso envia un mensaje informando la situación
-                    boolean encontrarAlumno = false;
+                boolean encontrarAlumno = false;
+                
+                try {
                 
                 // Condicional if que evalua si hay algun alumno para modificar, en el caso contrario envia un mensaje informando la situación
                 if (misAlumnos.size() > 0)
                 {
                     System.out.println("Ingrese la cédula del alumno que desea modificar");
                     String cedulaModificar = lector.next();
+                    if (!cedulaModificar.matches("\\d+")){
+                    throw new InputMismatchException();
+                    }
 
                     // Variable de tipo boolean que en caso de ser true seguira mostrando el menú para modificar, si es false sale de la opción 3
                     boolean opcionSalir = true;
+                    
+                    boolean repetido = false;
                     
                     // Ciclo for que recorre los datos del arrayList llamado misAlumnos
                     for (int i = 0; i < misAlumnos.size(); i ++)
                     {
                         if (misAlumnos.get(i).getCedula().equals(cedulaModificar)){
                             Alumno alumno = misAlumnos.get(i);
+                            encontrarAlumno = true;
                             System.out.println("\n" + "Los datos del alumno elegido son:" + "\n" +
                                                "Cédula: " + alumno.getCedula() + "\n" +
                                                "Nombre: " + alumno.getNombre() + "\n" +
@@ -158,9 +212,7 @@ public class Proyecto {
                                                "Correo: " + alumno.getCorreo() + "\n" +
                                                "Celular: " + alumno.getCelular() + "\n" +
                                                "================================");
-
                             do {
-
                             System.out.println("\n" + "Ingrese el dato que desea modificar" + "\n" +
                                                "Opción 1: Modificar cédula" + "\n" +
                                                "Opción 2: Modificar nombre" + "\n" +
@@ -177,18 +229,27 @@ public class Proyecto {
                                     case 1:
                                         System.out.println("\n" + "Digite la cédula nueva");
                                         String cedulaModificada = lector.next();
+                                        if (!cedulaModificada.matches("\\d+")){
+                                            throw new InputMismatchException();
+                                        }
                                         alumno.setCedula(cedulaModificada);
                                         break;
 
                                     case 2:
                                         System.out.println("\n" + "Digite el nuevo nombre del alumno");
                                         String nombreModificado = lector.next();
+                                        if (nombreModificado.matches(".*[0-9].*")){
+                                            throw new InputMismatchException();
+                                        }
                                         alumno.setNombre(nombreModificado);
                                         break;
 
                                     case 3:
                                         System.out.println("\n" + "Digite el nuevo apellido del alumno");
                                         String apellidoModificado = lector.next();
+                                        if (apellidoModificado.matches(".*[0-9].*")){
+                                            throw new InputMismatchException();
+                                        }
                                         alumno.setApellido(apellidoModificado);
                                         break;
 
@@ -207,11 +268,15 @@ public class Proyecto {
                                     case 6:
                                         System.out.println("\n" + "Digite el nuevo celular del alumno");
                                         String celularModificado = lector.next();
+                                        if (!celularModificado.matches("\\d+")){
+                                            throw new InputMismatchException();
+                                        }
                                         alumno.setCelular(celularModificado);
                                         break;
                                         
                                     case 0:
-                                        System.out.println("LOS DATOS NUEVOS FUERON MODIFICADOS CORRECTAMENTE" + "\n");
+                                        System.out.println("\n" + "LOS DATOS FUERON MODIFICADOS CORRECTAMENTE" + "\n" +
+                                                           "-------------------------------------------------");
                                         opcionSalir = false;
                                         break;
                                         
@@ -220,27 +285,29 @@ public class Proyecto {
                                 }
                             }  while (opcionSalir);
                         }
-                    }
+                    }   if (!encontrarAlumno)
+                        {
+                            System.out.println("No se encontro alumnos con el número de cédula ingresado");
+                        }              
                 } else {
                     System.out.println("EL REGISTRO DE ALUMNOS ESTA VACIO" + "\n" +
-                                       "=================================");
+                                       "---------------------------------");
+                } 
+                } catch (InputMismatchException e){
+                    System.out.println("Los datos ingresados no son validos, porfavor verifique la información");
                 }
-            if (!encontrarAlumno)
-            {
-                System.out.println("No se encontro alumnos con el número de cédula ingresado");
-            }
             break;
 
             case 4:
                 
                 // Mensaje inicial opción 4
                 System.out.println("\n" + "-----------------CONSULTAR ALUMNO-----------------" + "\n" +
-                                          "-------------------------------------------------" + "\n");
+                                          "--------------------------------------------------" + "\n");
                 // Condicional if que evalua si hay algun alumno para eliminar, en el caso contrario envia un mensaje informando la situación
                 if (misAlumnos.size() > 0){
                 
                 // Mensaje inicial de la opción consultar alumnos
-                System.out.println("\n" + "LOS ALUMNOS REGISTRADOS SON:" + "\n");
+                System.out.println("LOS ALUMNOS REGISTRADOS SON:" + "\n");
                 
                 // Ciclo for que recorre los datos del arrayList llamado misAlumnos
                     for (int i = 0; i < misAlumnos.size(); i ++)
@@ -255,12 +322,13 @@ public class Proyecto {
                                            "\n" + "======================================" + "\n");
                     }
                 } else {
-                    System.out.println("\n" + "En el momento no hay alumnos registrados" + "\n");
+                    System.out.println("EL REGISTRO DE ALUMNOS ESTA VACIO" + "\n" +
+                                       "---------------------------------");
                 }
                 break;
                 
             case 5:
-                System.out.println("Gracias por ingresar, vuelve pronto!");
+                System.out.println("Gracias por ingresar, vuelve pronto! :)");
                 activo = false;
                 break;
                 
