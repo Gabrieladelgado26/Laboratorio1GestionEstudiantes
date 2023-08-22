@@ -99,7 +99,8 @@ public class Proyecto {
         // Mensaje inicial opción 1
         System.out.println("\n" + "-----------------INGRESAR ALUMNO-----------------" + "\n" +
                                   "-------------------------------------------------" + "\n");
-
+        
+        // try - catch que atrapa los posibles errores de ingresar valores incorrectos
         try {
             System.out.println("Introduce la cédula del alumno");
             String cedula = lector.next();
@@ -118,6 +119,7 @@ public class Proyecto {
                 }
             }
             
+            // Si la cédula no esta en el sistema continua con el proceso de ingreso del alumno
             if (registrada != true){
                 System.out.println("\n" +"Introduce el nombre del alumno");
                 String nombre = lector.next();
@@ -157,9 +159,11 @@ public class Proyecto {
 
                 System.out.println("\n" + "ALUMNO REGISTRADO CORRECTAMENTE" + "\n" +
                                    "-------------------------------");
+            // Si se intenta ingresar un alumno con una cédula que ya esta en el sistema, se envia un mensaje informando al usuario
             } else {
                 System.out.println("La cédula del alumno que intenta ingresar ya se encuentra registrada");
             }
+        // Atrapa los posibles errores de ingresar un tipo de dato incorrecto
         } catch (InputMismatchException | NumberFormatException e){
             System.out.println("Los datos ingresados no son validos, porfavor verifique la información");
         }
@@ -179,12 +183,15 @@ public class Proyecto {
         // Variable de tipo boolean que sera true si existe el número de cédula del alumno que se desea eliminar, si es falso envia un mensaje informando la situación
         boolean encontrarAlumnoEliminar = false;
 
+        // try - catch que atrapa los posibles errores de ingresar valores incorrectos
         try{ 
         // Condicional if que evalua si hay algun alumno para eliminar, en el caso contrario envia un mensaje informando la situación
         if (misAlumnos.size() > 0)
         {
+            // El usuario debe ingresar la cédula del alumno que desea eliminar
             System.out.println("Introduce la cédula del alumno que desea eliminar");
             String alumnoEliminar = lector.next();
+            // Excepción que envia mensaje de error si el usuario digita un tipo de dato incorrecto
             if (!alumnoEliminar.matches("\\d+")){
                 throw new InputMismatchException();
             }
@@ -192,10 +199,12 @@ public class Proyecto {
             // Ciclo for que recorre los datos del arrayList llamado misAlumnos
             for (int i = 0; i < misAlumnos.size(); i ++)
             {
+                // Condicional if que evalua si la cédula ingresada por el usuario es igual a la cédula de un alumno especifico del ArrayList 
                 if (misAlumnos.get(i).getCedula().equals(alumnoEliminar))
                 {
                     encontrarAlumnoEliminar = true;
                     Alumno alumno = misAlumnos.get(i);
+                    // Mensaje para confirmar si el usuario desea eliminar al alumno, en caso contrario sale de la opción dos
                     System.out.println("Esta seguro que desea eliminar a el alumno " + alumno.getNombre() + " de cédula: " + alumnoEliminar + "\n" +
                                        "Digite (s) para eliminar el alumno o digite (n) si desea salir de esta opción (en minusculas)");
                     String eliminar = lector.next();
@@ -217,14 +226,17 @@ public class Proyecto {
                     break;
                 }
             }
+            // Si no hay alumnos con la cédula ingresada por el usuario, se envia un mensaje informando la situación
             if (!encontrarAlumnoEliminar)
             {
                 System.out.println("No se encontro alumnos con el número de cédula ingresado");
             }
+        // Si no hay alumnos registrados se envia un mensaje informando la situación
         } else {
             System.out.println("EL REGISTRO DE ALUMNOS ESTA VACIO" + "\n" +
                                "=================================");
         }
+        // Atrapa los posibles errores de ingresar un tipo de dato incorrecto
         } catch (InputMismatchException | NumberFormatException e){
             System.out.println("Los datos ingresados no son validos, porfavor verifique la información");
         }   
@@ -264,6 +276,7 @@ public class Proyecto {
                 if (misAlumnos.get(i).getCedula().equals(cedulaModificar)){
                     Alumno alumno = misAlumnos.get(i);
                     encontrarAlumno = true;
+                    // Muestra los datos del alumno elegido para modificar
                     System.out.println("\n" + "Los datos del alumno elegido son:" + "\n" +
                                        "Cédula: " + alumno.getCedula() + "\n" +
                                        "Nombre: " + alumno.getNombre() + "\n" +
@@ -273,6 +286,7 @@ public class Proyecto {
                                        "Celular: " + alumno.getCelular() + "\n" +
                                        "================================");
                     do {
+                        // Muestra un menú de opciones con los datos que se pueden modificar
                         System.out.println("\n" + "Ingrese el dato que desea modificar" + "\n" +
                                            "Opción 1: Modificar cédula" + "\n" +
                                            "Opción 2: Modificar nombre" + "\n" +
@@ -284,6 +298,7 @@ public class Proyecto {
 
                         int datoModificar = lector.nextInt();
 
+                        // Según el dato a modificar se realiza el proceso de cambio de datos, dato antiguo por dato modificado
                         switch (datoModificar){
 
                             case 1:
@@ -339,19 +354,23 @@ public class Proyecto {
                                                    "-------------------------------------------------");
                                 opcionSalir = false;
                                 break;
-
+                            
+                            // Si el usuario ingresa un valor diferente al del menú, se envia un mensaje informando la situación
                             default:
                                 System.out.println("El dato ingresado no es valido, por favor selecciona una de las opciones del menú" + "\n");
                         } 
                     } while (opcionSalir);
                 }
+            // Si no hay alumnos con la cédula ingresada por el usuario, se envia un mensaje informando la situación
             } if (!encontrarAlumno) {
                 System.out.println("No se encontro alumnos con el número de cédula ingresado");
-            }              
+            }   
+        // Si no hay alumnos registrados se envia un mensaje informando la situación
         } else {
             System.out.println("EL REGISTRO DE ALUMNOS ESTA VACIO" + "\n" +
                                "---------------------------------");
         } 
+        // Atrapa los posibles errores de ingresar un tipo de dato incorrecto
         } catch (InputMismatchException | NumberFormatException e){
             System.out.println("Los datos ingresados no son validos, porfavor verifique la información");
         }
@@ -360,7 +379,6 @@ public class Proyecto {
     /**
      * Metodo que permite consultar la lista de alumnos del sistema
      * @param misAlumnos ArrayList que guarda los alumnos ingresados al sistema
-     * @param lector Permite capturar los datos que digite el usuario
      */
     public static void consultarAlumno(ArrayList <Alumno> misAlumnos)
     {
@@ -385,6 +403,7 @@ public class Proyecto {
                                    "Celular: " + alumno.getCelular() + "\n" +
                                    "\n" + "======================================" + "\n");
             }
+        // Si no hay alumnos registrados se envia un mensaje informando la situación
         } else {
             System.out.println("EL REGISTRO DE ALUMNOS ESTA VACIO" + "\n" +
                                "---------------------------------");
