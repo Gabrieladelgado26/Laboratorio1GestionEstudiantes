@@ -5,6 +5,12 @@
 package com.mycompany.proyecto;
 
 import Mundo.Alumno;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -15,7 +21,7 @@ import java.util.Scanner;
  */
 public class Proyecto {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException, IllegalArgumentException, IOException {
         // Función que permite leer la opción del usuario
         Scanner lector = new Scanner (System.in);
         
@@ -35,7 +41,8 @@ public class Proyecto {
                                "2.- Eliminar alumno" + "\n" +
                                "3.- Modificar alumno" + "\n" +
                                "4.- Consultar alumno" + "\n" +
-                               "5.- Terminar programa" + "\n" +
+                               "5.- Generar reporte por semestre" + "\n" +
+                               "6.- Terminar programa" + "\n" +
                                "==================================");
 
             int opcion = lector.nextInt();
@@ -46,11 +53,13 @@ public class Proyecto {
                 case 1:
                     // LLamando al metodo que permite ingresar alumnos
                     ingresarAlumno(misAlumnos, lector);
+                    escribirRegistroAlumnos(misAlumnos);
                     break;
 
                 case 2:
                     // LLamando al metodo que permite eliminar alumnos
                     eliminarAlumno(misAlumnos, lector);
+                    escribirRegistroAlumnos(misAlumnos);
                     break;
 
                 case 3:
@@ -63,8 +72,16 @@ public class Proyecto {
                     consultarAlumno(misAlumnos);
 
                     break;
-
+                    
                 case 5:
+                    try {
+                        GenerarReporteSemestral(misAlumnos, lector);
+                    } catch(Exception e) {
+                	System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+                case 6:
                     // Permite salir del programa
                     System.out.println("Gracias por ingresar, vuelve pronto! :)");
                     activo = false;
@@ -82,7 +99,7 @@ public class Proyecto {
         }
     }
     
-     // -----------------------------------------------------------------
+    // -----------------------------------------------------------------
     // Puntos de Extensión
     // -----------------------------------------------------------------
 
@@ -206,24 +223,21 @@ public class Proyecto {
                     Alumno alumno = misAlumnos.get(i);
                     // Mensaje para confirmar si el usuario desea eliminar al alumno, en caso contrario sale de la opción dos
                     System.out.println("Esta seguro que desea eliminar a el alumno " + alumno.getNombre() + " de cédula: " + alumnoEliminar + "\n" +
-                                       "Digite (s) para eliminar el alumno o digite (n) si desea salir de esta opción (en minusculas)");
+                                       "Digite (si) para eliminar el alumno o digite (x) si desea cancelar la eliminación (en minusculas)");
                     String eliminar = lector.next();
                     if (eliminar.matches(".*[0-9].*")){
                         throw new InputMismatchException();
                     }
 
                     // Evalua si el usuario esta seguro de eliminar al alumno seleccionado
-                    switch (eliminar){
-                        case "s":
-                            misAlumnos.remove(i);
-                            System.out.println("\n" + "EL ALUMNO DE CÉDULA " + alumnoEliminar + " HA SIDO ELIMINADO" + "\n" +
+                    if (eliminar.equals("si"))
+                    {
+                        misAlumnos.remove(i);
+                        System.out.println("\n" + "EL ALUMNO DE CÉDULA " + alumnoEliminar + " HA SIDO ELIMINADO" + "\n" +
                                                "------------------------------------------------------------");
-                            break;
-
-                        case "n":
-                            System.out.println("Has elegido la opción de salir");
+                    } else {
+                        System.out.println("Eligio la opción de cancelar, el alumno " + alumnoEliminar + " NO ha sigo eliminado");
                     }
-                    break;
                 }
             }
             // Si no hay alumnos con la cédula ingresada por el usuario, se envia un mensaje informando la situación
@@ -392,9 +406,8 @@ public class Proyecto {
             System.out.println("LOS ALUMNOS REGISTRADOS SON:" + "\n");
 
             // Ciclo for que recorre los datos del arrayList llamado misAlumnos
-            for (int i = 0; i < misAlumnos.size(); i ++)
+            for (Alumno alumno: misAlumnos)
             {
-                Alumno alumno = misAlumnos.get(i);
                 System.out.println("Cédula: " + alumno.getCedula() + "\n" +
                                    "Nombre: " + alumno.getNombre() + "\n" +
                                    "Apellido: " + alumno.getApellido() + "\n" +
@@ -407,6 +420,121 @@ public class Proyecto {
         } else {
             System.out.println("EL REGISTRO DE ALUMNOS ESTA VACIO" + "\n" +
                                "---------------------------------");
+        }
+    }
+    
+    /**
+     * Metodo que permite consultar la lista de alumnos del sistema
+     * @param misAlumnos ArrayList que guarda los alumnos ingresados al sistema
+     */
+    public static void GenerarReporteSemestral(ArrayList <Alumno> misAlumnos, Scanner lector) throws FileNotFoundException, IllegalArgumentException
+    {
+        // Mensaje inicial opción 5
+        System.out.println("\n" + "------------GENERAR REPORTE SEMESTRAL-------------" + "\n" +
+                           "--------------------------------------------------" + "\n");
+
+        // Pregunta a el usuario de que semestre desea generar el reporte
+        System.out.println("¿De que semestre deseas generar el reporte");
+        int reporteSemestre = lector.nextInt();
+        
+        // Crear el archivo con la clase FILE
+     	File reporteSemestral = new File("./data/reporteSemestral.txt");
+     	
+        // Crear la pluma para escribir el archivo
+        PrintWriter pluma = new PrintWriter(reporteSemestral);
+
+        // Mensaje inicial opción 5
+        pluma.println("\n" + "------------GENERAR REPORTE SEMESTRAL-------------" + "\n" +
+                             "--------------------------------------------------" + "\n");
+
+        pluma.println("LOS ALUMNOS REGISTRADOS DEL SEMESTRE " + reporteSemestre +" SON:" + "\n");
+
+        // Ciclo for que recorre los datos del arrayList llamado misAlumnos
+        for (Alumno alumno: misAlumnos)
+        {
+            if (alumno.getSemestre() == reporteSemestre)
+            {
+                pluma.println("Cédula: " + alumno.getCedula() + "\n" +
+                               "Nombre: " + alumno.getNombre() + "\n" +
+                               "Apellido: " + alumno.getApellido() + "\n" +
+                               "Semestre: " + alumno.getSemestre() + "\n" +
+                               "Correo: " + alumno.getCorreo() + "\n" +
+                               "Celular: " + alumno.getCelular() + "\n" +
+                               "\n" + "======================================" + "\n");
+                
+                System.out.println("EL REPORTE SE GENERO CORRECTAMENTE" + "\n" +
+                                   "----------------------------------");
+
+            }
+        }
+        // Cerrar pluma
+        pluma.close();
+        
+        if (misAlumnos.isEmpty()){
+            System.out.println("No hay alumnos para mostrar");
+        }
+    }
+    
+    /**
+     * Metodo que permite leer el reporte del registro de alumnos del sistema
+     * @param misAlumnos ArrayList que guarda los alumnos ingresados al sistema
+     */
+    public static void leerRegistroAlumnos(ArrayList <Alumno> misAlumnos) throws FileNotFoundException, IOException
+    {
+        // Crear archivo en la clase FILE
+        File reporteAlumnos = new File("./data/reporteAlumnos.txt");
+    
+        try (FileReader fr = new FileReader(reporteAlumnos);
+    
+        BufferedReader lector = new BufferedReader(fr)) {
+
+            String cadenaCaracteres;
+            while ((cadenaCaracteres = lector.readLine()) != null) {
+                String[] datos = cadenaCaracteres.split(",");
+
+                String cedula = datos[0].trim();
+                String nombre = datos[1].trim();
+                String apellido = datos[2].trim();
+                String semestre = datos[3].trim();
+                String correo = datos[4].trim();
+                String celular = datos[5].trim();
+
+                int semestreI = Integer.parseInt(semestre);
+
+                Alumno alumno = new Alumno(cedula, nombre, apellido, semestreI, correo, celular);
+                misAlumnos.add(alumno);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error durante la lectura del archivo");
+        }
+    }
+    
+    /**
+     * Metodo que permite escribir el reporte del registro de alumnos del sistema
+     * @param misAlumnos ArrayList que guarda los alumnos ingresados al sistema
+     */
+    public static void escribirRegistroAlumnos(ArrayList <Alumno> misAlumnos) throws FileNotFoundException
+    {
+        try 
+        {
+            // Crear archivo en la clase FILE
+            File reporteAlumnos = new File("./data/reporteAlumnos.txt");
+            
+            // Crear la pluma para escribir el archivo
+            PrintWriter pluma = new PrintWriter(reporteAlumnos);
+
+            // Ciclo for que recorre los datos del arrayList llamado misAlumnos
+            for (Alumno alumno: misAlumnos)
+            {
+                    String cadenaCaracteres = alumno.getCedula() + "," + alumno.getNombre() + "," + alumno.getApellido() + "," +
+                                              alumno.getSemestre() + "," + alumno.getCorreo() + "," + alumno.getCelular();
+                    pluma.println(cadenaCaracteres);
+
+            }
+        } catch (Exception e){
+            System.out.println(e.getMessage());
         }
     }
 }
