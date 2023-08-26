@@ -1,6 +1,0 @@
-
-------------GENERAR REPORTE SEMESTRAL-------------
---------------------------------------------------
-
-LOS ALUMNOS REGISTRADOS DEL SEMESTRE 5 SON:
-
