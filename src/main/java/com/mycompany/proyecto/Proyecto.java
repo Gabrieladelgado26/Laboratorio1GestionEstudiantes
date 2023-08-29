@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -274,8 +273,8 @@ public class Proyecto {
         // Variable de tipo boolean que sera true si existe el número de cédula del alumno que se desea eliminar, si es falso envia un mensaje informando la situación
         boolean encontrarAlumno = false;
 
-        try {
-
+        try 
+        {
         // Condicional if que evalua si hay algun alumno para modificar, en el caso contrario envia un mensaje informando la situación
         if (misAlumnos.size() > 0)
         {
@@ -375,7 +374,7 @@ public class Proyecto {
                             default -> System.out.println("El dato ingresado no es valido, por favor selecciona una de las opciones del menú" + "\n");
                         }
                         // Si el usuario ingresa un valor diferente al del menú, se envia un mensaje informando la situación
-                                            } while (opcionSalir);
+                    } while (opcionSalir);
                 }
             // Si no hay alumnos con la cédula ingresada por el usuario, se envia un mensaje informando la situación
             } if (!encontrarAlumno) {
@@ -426,7 +425,7 @@ public class Proyecto {
     }
     
     /**
-     * Metodo que permite consultar la lista de alumnos del sistema
+     * Metodo que permite generar un reporte de estudiantes del semestre que desee el usuario
      * @param misAlumnos ArrayList que guarda los alumnos ingresados al sistema
      * @param lector Scanner que recibe la entrada del usuario
      * @throws FileNotFoundException Excepción que se lanza en caso de que el archivo no exista
@@ -446,14 +445,13 @@ public class Proyecto {
      	
         // Mensaje inicial opción 5
         try (PrintWriter pluma = new PrintWriter(reporteSemestral)) {
-            // Mensaje inicial opción 5
-            pluma.println("\n" + "------------GENERAR REPORTE SEMESTRAL-------------" + "\n" +
-                    "--------------------------------------------------" + "\n");
-            pluma.println("LOS ALUMNOS REGISTRADOS DEL SEMESTRE " + reporteSemestre +" SON:" + "\n");
             // Ciclo for que recorre los datos del arrayList llamado misAlumnos
             for (Alumno alumno : misAlumnos) {
                 if (alumno.getSemestre() == reporteSemestre)
                 {
+                    pluma.println("\n" + "------------GENERAR REPORTE SEMESTRAL-------------" + "\n" +
+                    "--------------------------------------------------" + "\n");
+                    pluma.println("LOS ALUMNOS REGISTRADOS DEL SEMESTRE " + reporteSemestre +" SON:" + "\n");
                     pluma.println("Cédula: " + alumno.getCedula() + "\n" +
                                   "Nombre: " + alumno.getNombre() + "\n" +
                                   "Apellido: " + alumno.getApellido() + "\n" +
@@ -464,10 +462,10 @@ public class Proyecto {
                     
                     System.out.println("EL REPORTE SE GENERO CORRECTAMENTE" + "\n" +
                             "----------------------------------");
-                    
                 }
             }
             // Cerrar pluma
+            pluma.close();
         }  
         if (misAlumnos.isEmpty()){
             System.out.println("No hay alumnos para mostrar");
@@ -480,8 +478,9 @@ public class Proyecto {
      * @throws FileNotFoundException Excepción que se lanza en caso de que el archivo no exista
      * @throws IOException Excepción que se lanza en caso de que haya errores al leer el archivo
      */
-    public static void leerRegistroAlumnos(ArrayList<Alumno> misAlumnos) throws FileNotFoundException, IOException {
-        // Ubicación del archivo de datos
+    public static void leerRegistroAlumnos(ArrayList<Alumno> misAlumnos) throws FileNotFoundException, IOException 
+    {
+        // Crear el archivo con la clase FILE
         File archivo = new File("./data/reporteAlumnos.txt");
 
         try (FileReader reporteAlumnos = new FileReader(archivo);
@@ -505,7 +504,7 @@ public class Proyecto {
                 misAlumnos.add(alumno);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("No existen alumnos registrados en el sistema");
+            System.out.println("En el momento no existen alumnos registrados en el sistema :(");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
