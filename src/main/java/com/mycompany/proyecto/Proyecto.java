@@ -445,13 +445,15 @@ public class Proyecto {
      	
         // Mensaje inicial opción 5
         try (PrintWriter pluma = new PrintWriter(reporteSemestral)) {
+            
+            pluma.println("\n" + "------------GENERAR REPORTE SEMESTRAL-------------" + "\n" +
+                    "--------------------------------------------------" + "\n");
+            pluma.println("LOS ALUMNOS REGISTRADOS DEL SEMESTRE " + reporteSemestre +" SON:" + "\n");
+            
             // Ciclo for que recorre los datos del arrayList llamado misAlumnos
             for (Alumno alumno : misAlumnos) {
                 if (alumno.getSemestre() == reporteSemestre)
                 {
-                    pluma.println("\n" + "------------GENERAR REPORTE SEMESTRAL-------------" + "\n" +
-                    "--------------------------------------------------" + "\n");
-                    pluma.println("LOS ALUMNOS REGISTRADOS DEL SEMESTRE " + reporteSemestre +" SON:" + "\n");
                     pluma.println("Cédula: " + alumno.getCedula() + "\n" +
                                   "Nombre: " + alumno.getNombre() + "\n" +
                                   "Apellido: " + alumno.getApellido() + "\n" +
@@ -459,9 +461,6 @@ public class Proyecto {
                                   "Correo: " + alumno.getCorreo() + "\n" +
                                   "Celular: " + alumno.getCelular() + "\n" +
                                   "\n" + "======================================" + "\n");
-                    
-                    System.out.println("EL REPORTE SE GENERO CORRECTAMENTE" + "\n" +
-                            "----------------------------------");
                 }
             }
             // Cerrar pluma
@@ -469,6 +468,9 @@ public class Proyecto {
         }  
         if (misAlumnos.isEmpty()){
             System.out.println("No hay alumnos para mostrar");
+        } else {
+            System.out.println("EL REPORTE SE GENERO CORRECTAMENTE" + "\n" +
+                                   "----------------------------------");
         }
     }
     
